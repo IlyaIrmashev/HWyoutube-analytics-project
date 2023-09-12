@@ -48,6 +48,9 @@ class Channel:
         """Сравнивает у какого канала меньше или равно подписчиков"""
         return self.subscriber_count <= other.subscriber_count
 
+    def __eq__(self, other):
+        return self.subscriber_count == other.subscriber_count
+
     def print_info(self) -> None:
         """Выводит в консоль информацию о канале."""
         channel = self.youtube.channels().list(id=self.__channel_id, part='snippet,statistics').execute()

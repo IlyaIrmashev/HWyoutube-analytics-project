@@ -9,13 +9,20 @@ class Video:
 
     def __init__(self, video_id):
         """Инициализация видео по его ID"""
-        self.video_response = self.service.videos().list(part='snippet,statistics,contentDetails,topicDetails',
-                                                         id=video_id).execute()
-        self.video_id: str = video_id
-        self.title: str = self.video_response['items'][0]['snippet']['title']
-        self.view_count: int = self.video_response['items'][0]['statistics']['viewCount']
-        self.like_count: int = self.video_response['items'][0]['statistics']['likeCount']
-        self.url = "https://www.youtube.com/channel/" + self.video_id
+        try:
+            self.video_response = self.service.videos().list(part='snippet,statistics,contentDetails,topicDetails',
+                                                             id=video_id).execute()
+            self.video_id: str = video_id
+            self.title: str = self.video_response['items'][0]['snippet']['title']
+            self.view_count: int = self.video_response['items'][0]['statistics']['viewCount']
+            self.like_count: int = self.video_response['items'][0]['statistics']['likeCount']
+            self.url = "https://www.youtube.com/channel/" + self.video_id
+        except IndexError:
+            self.video_id = video_id
+            self.title = None
+            self.view_count = None
+            self.like_count = None
+            self.url = None
 
     def __str__(self):
         """Возвращает строковое представление видео в формате "<название_видео> (<ссылка_на_видео>)"."""
